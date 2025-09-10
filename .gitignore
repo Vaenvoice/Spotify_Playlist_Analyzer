@@ -1,23 +1,23 @@
-# Ignore RStudio project files
+# Ignore data folders with raw and processed data
+data/
+
+# Ignore plots folder (generated visualizations)
+plots/
+
+# Ignore local environment file with API credentials
+.Renviron
+
+# Ignore RStudio project files you don’t want in repo
+.Rproj.user/
+
+# Ignore temporary files created by R
 .Rhistory
 .RData
 .Ruserdata
-.Rproj.user/
 
-# Environment variables (API keys, secrets)
-.Renviron
-
-# Data folders (local only, not tracked)
-data/
-plots/
-
-# Quarto / R Markdown cache
-*.utf8.md
-*.knit.md
-cache/
-__pycache__/
-*.Rproj
-
-# OS-specific files
+# Ignore OS files
 .DS_Store
 Thumbs.db
+
+# Ignore package/library folders if any (optional)
+library/

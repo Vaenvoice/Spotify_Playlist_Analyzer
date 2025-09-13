@@ -1,20 +1,38 @@
-# main.R - Master script
+#This will be your default repo location
+setwd("C:/Users/bedan/Documents/R_Project/Spotify_Playlist_Analyzer")
 
-# Load your scripts
+
+#if R does not loads Renviron file, uncomment and run the following
+#readRenviron("~/.Renviron")
+
+
+source("R/utils.R")
 source("R/get_data.R")
 source("R/clean_data.R")
 source("R/plot_features.R")
 
-# === Run your analysis pipeline below ===
+# Load environment variables
+client_id <- Sys.getenv("SPOTIFY_CLIENT_ID")
+client_secret <- Sys.getenv("SPOTIFY_CLIENT_SECRET")
+redirect_uri <- "http://127.0.0.1:1410/callback"
 
-# 1. Authenticate with Spotify (if needed)
-# authenticate_spotify()  # ← this would be in utils.R
 
-# 2. Get data
-# playlist_data <- get_playlist_data("your_playlist_id")
+cat("Client ID:", client_id, "\n")
+cat("Client Secret:", substr(client_secret, 1, 4), "...\n")
 
-# 3. Clean data
-# clean_data <- clean_playlist_data(playlist_data)
+# Get the token using Authorization Code Flow
+token <- get_spotify_token(client_id, client_secret, redirect_uri)
 
-# 4. Plot features
-# plot_audio_features(clean_data)
+# Ask for playlist ID
+playlist_id <- readline(prompt = "Enter the Spotify Playlist ID: ")
+
+# Fetch and clean data
+raw_data <- fetch_playlist_data(playlist_id, token)
+playlist_info <- clean_playlist_data(raw_data)
+
+# Sort by popularity descending
+top_tracks <- playlist_info[order(-playlist_info$popularity), ]
+head(top_tracks, 10)
+
+# Plot features
+plot_playlist_features(playlist_info)
